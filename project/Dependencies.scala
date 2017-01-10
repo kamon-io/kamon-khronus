@@ -22,7 +22,7 @@ object Dependencies {
     "Kamon Repository Snapshots" at "http://snapshots.kamon.io"
   )
 
-  val kamonVersion      = "0.6.3"
+  val kamonVersion      = "0.6.5"
 
   val kamonCore         = "io.kamon"                  %%  "kamon-core"            % kamonVersion
   val kamonTestkit      = "io.kamon"                  %%  "kamon-testkit"         % kamonVersion
@@ -30,7 +30,7 @@ object Dependencies {
   val khronusClient     = "com.despegar"              %   "khronus-java-client"   % "0.0.5"
 
   val easyMock          = "org.easymock"              %   "easymock"              % "3.2"
-  val scalatest         = "org.scalatest"             %%  "scalatest"             % "2.2.4"
+  val scalatest         = "org.scalatest"             %%  "scalatest"             % "3.0.1"
 
   def compileScope   (deps: ModuleID*): Seq[ModuleID] = deps map (_ % "compile")
   def testScope      (deps: ModuleID*): Seq[ModuleID] = deps map (_ % "test")
