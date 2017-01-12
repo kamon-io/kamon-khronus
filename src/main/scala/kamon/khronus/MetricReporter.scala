@@ -119,7 +119,7 @@ class MetricReporterSubscriber(khronusConfig: Config) extends Actor with ActorLo
 
   def pushCounter(name: String, snapshot: Counter.Snapshot): Unit = {
     khronusClient.foreach { kc ⇒
-      kc.recordGauge(name, snapshot.count)
+      kc.incrementCounter(name, snapshot.count)
     }
   }
 }
