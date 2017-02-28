@@ -13,15 +13,11 @@
  * =========================================================================================
  */
 
+val kamonCore = "io.kamon" %% "kamon-core" % "0.6.6"
+val khronusClient = "com.despegar" % "khronus-java-client" % "0.0.5"
+val easyMock = "org.easymock" % "easymock" % "3.2"
 
-import Settings._
-import Dependencies._
-
-lazy val root = (project in file("."))
-  .settings(name := "kamon-khronus")
-  .settings(basicSettings: _*)
-  .settings(formatSettings: _*)
-  .settings(
-      libraryDependencies ++=
-        compileScope(kamonCore, khronusClient) ++
-        testScope(scalatest, easyMock))
+name := "kamon-khronus"
+libraryDependencies ++=
+  compileScope(kamonCore, khronusClient) ++
+  testScope(scalatest, easyMock)
