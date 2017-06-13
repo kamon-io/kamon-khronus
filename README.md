@@ -17,13 +17,13 @@ Supported releases and dependencies are shown below.
 
 | kamon-khronus  | status | jdk  | scala            | akka   |
 |:------:|:------:|:----:|------------------|:------:|
-|  0.6.5 | stable | 1.7+, 1.8+ | 2.10, 2.11, 2.12  | 2.3.x, 2.4.x |
+|  0.6.7 | stable | 1.7+, 1.8+ | 2.10, 2.11, 2.12  | 2.3.x, 2.4.x |
 
 To get started with SBT, simply add the following to your `build.sbt`
 file:
 
 ```scala
-libraryDependencies += "io.kamon" %% "kamon-khronus" % "0.6.5"
+libraryDependencies += "io.kamon" %% "kamon-khronus" % "0.6.7"
 ```
 Configuration
 -------------
@@ -32,7 +32,7 @@ Set `kamon.khronus.host` to point to your Khronus instance using a `host:port` v
 
 These are the configuration keys available and their default values (taken from the `reference.conf` file supplied with this module):
 
-``` typesafeconfig 
+``` typesafeconfig
 kamon {
   khronus {
     host = "127.0.0.1:1173"

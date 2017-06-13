@@ -13,7 +13,7 @@
  * =========================================================================================
  */
 
-val kamonCore = "io.kamon" %% "kamon-core" % "0.6.6"
+val kamonCore = "io.kamon" %% "kamon-core" % "0.6.7"
 val khronusClient = "com.despegar" % "khronus-java-client" % "0.0.5"
 val easyMock = "org.easymock" % "easymock" % "3.2"
 
