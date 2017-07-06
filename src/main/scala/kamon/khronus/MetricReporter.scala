@@ -61,11 +61,13 @@ class MetricReporterSubscriber(khronusConfig: Config) extends Actor with ActorLo
         appName ← Try(config.getString("app-name"))
         interval ← Try(config.getLong("interval"))
         measures ← Try(config.getInt("max-measures"))
+        endpoint ← Try(config.getString("endpoint"))
         kc ← Try(new KhronusClient.Builder()
           .withApplicationName(appName)
           .withSendIntervalMillis(interval)
           .withMaximumMeasures(measures)
           .withHosts(host)
+          .withEndpoint(endpoint)
           .build)
       } yield kc
     kc.failed.foreach(ex ⇒ log.error(s"Khronus metrics reporting inoperative: {}", ex))
