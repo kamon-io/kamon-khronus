@@ -18,7 +18,7 @@ package kamon.khronus
 
 import com.despegar.khronus.jclient.KhronusClient
 import com.typesafe.config.Config
-import kamon.metric.{MetricDistribution, MetricValue, TickSnapshot}
+import kamon.metric.{Bucket, MetricDistribution, MetricValue, TickSnapshot}
 import kamon.{Kamon, MetricReporter}
 import org.slf4j.LoggerFactory
 
@@ -26,7 +26,7 @@ import scala.util.{Failure, Success, Try}
 
 class KhronusReporter extends MetricReporter {
   private val logger = LoggerFactory.getLogger(classOf[KhronusReporter])
-  private var khronusClient: Option[KhronusClient] = None
+  private var khronusClientOpt: Option[KhronusClient] = None
   logger.info("Starting the Kamon(Khronus) module")
 
   override def reportTickSnapshot(snapshot: TickSnapshot): Unit = {
@@ -35,30 +35,30 @@ class KhronusReporter extends MetricReporter {
     pushHistogram(snapshot.metrics.histograms ++ snapshot.metrics.minMaxCounters)
   }
 
-  private def pushHistogram(histograms: Seq[MetricDistribution]): Unit = {
+  def pushHistogram(histograms: Seq[MetricDistribution]): Unit = {
     for {
-      kc <- khronusClient
+      kc <- khronusClientOpt
       metric <- histograms
       bucket <- metric.distribution.bucketsIterator
-    } yield {
+    } {
       kc.recordTime(metric.name, bucket.value)
     }
   }
 
-  private def pushCounter(counters: Seq[MetricValue]): Unit = {
+  def pushCounter(counters: Seq[MetricValue]): Unit = {
     for {
-      kc <- khronusClient
+      kc <- khronusClientOpt
       counter <- counters
-    } yield {
+    } {
       kc.incrementCounter(counter.name, counter.value)
     }
   }
 
-  private def pushGauge(gauges : Seq[MetricValue]): Unit = {
+  def pushGauge(gauges : Seq[MetricValue]): Unit = {
     for {
-      kc <- khronusClient
+      kc <- khronusClientOpt
       gauge <- gauges
-    } yield {
+    } {
       kc.recordGauge(gauge.name, gauge.value)
     }
   }
@@ -94,10 +94,10 @@ class KhronusReporter extends MetricReporter {
 
     kc match {
       case Success(client) =>
-        khronusClient = Some(client)
+        khronusClientOpt = Some(client)
       case Failure(ex) =>
         logger.error(s"Khronus metrics reporting inoperative: {}", ex)
-        khronusClient = None
+        khronusClientOpt = None
     }
   }
 }
