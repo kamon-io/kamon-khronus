@@ -27,7 +27,11 @@ import scala.util.{Failure, Success, Try}
 class KhronusReporter extends MetricReporter {
   private val logger = LoggerFactory.getLogger(classOf[KhronusReporter])
   private var khronusClientOpt: Option[KhronusClient] = None
+
   logger.info("Starting the Kamon(Khronus) module")
+
+  private val SPAN_PROCESSING = "span.processing-time"
+  private val OPERATION = "operation"
 
   override def reportTickSnapshot(snapshot: TickSnapshot): Unit = {
     pushCounter(snapshot.metrics.counters)
@@ -41,7 +45,7 @@ class KhronusReporter extends MetricReporter {
       metric <- histograms
       bucket <- metric.distribution.bucketsIterator
     } {
-      kc.recordTime(metric.name, bucket.value)
+      kc.recordTime(getDistributionMetricName(metric), bucket.value)
     }
   }
 
@@ -99,5 +103,12 @@ class KhronusReporter extends MetricReporter {
         logger.error(s"Khronus metrics reporting inoperative: {}", ex)
         khronusClientOpt = None
     }
+  }
+
+  def getDistributionMetricName(metric: MetricDistribution): String = {
+    if (metric.name.equalsIgnoreCase(SPAN_PROCESSING))
+      metric.tags.getOrElse(OPERATION, "")
+    else
+      metric.name
   }
 }
